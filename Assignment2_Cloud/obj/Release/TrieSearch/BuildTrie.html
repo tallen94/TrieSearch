@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+</head>
+<body>
+    <script>
+        $.ajax({
+            type: "POST",
+            url: "SearchSuggestions.asmx/DownloadWiki",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (msg) {
+                console.log(msg);
+                $.ajax({
+                    type: "POST",
+                    url: "SearchSuggestions.asmx/BuildTrie",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+                        console.log(msg);
+                    },
+                    error: function (msg) {
+                        console.log(msg);
+                    }
+                });
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
+    </script>
+</body>
+</html>

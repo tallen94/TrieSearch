@@ -1,0 +1,27 @@
+﻿h1 {
+   margin-top: 20vh;
+   text-align: center;
+   margin-bottom: 20px;
+}
+
+.container {
+    max-width: 500px;
+}
+
+input[type="text"] {
+    box-shadow: 0px 5px 5px rgb(128, 128, 128);
+}
+
+ul {
+  border-left: 1px solid black;  
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+li {
+    border-bottom: 1px solid rgb(174, 174, 174);
+    padding: 8px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
