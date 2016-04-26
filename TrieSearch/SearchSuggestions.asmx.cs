@@ -31,7 +31,7 @@ namespace TrieSearch {
             float memUsage = memProcess.NextValue();
             string word = reader.ReadLine();
             int i = 0;
-            while(word != null && memUsage > 100) {
+            while(word != null && memUsage > 200) {
                 tree.AddWord(word);
                 if(i++ % 10000 == 0) {
                     memUsage = memProcess.NextValue();
