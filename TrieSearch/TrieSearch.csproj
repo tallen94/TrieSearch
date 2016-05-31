@@ -100,6 +100,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ng-lodash.min.js" />
     <Content Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -114,7 +115,9 @@
     <Content Include="index.html" />
     <Content Include="index.js" />
     <Content Include="SearchSuggestions.asmx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -122,8 +125,8 @@
       <DependentUpon>SearchSuggestions.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="TrieGraph.cs" />
     <Compile Include="TrieNode.cs" />
-    <Compile Include="TrieTree.cs" />
     <Compile Include="WebRole.cs" />
   </ItemGroup>
   <PropertyGroup>

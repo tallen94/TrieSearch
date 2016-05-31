@@ -26,8 +26,14 @@
     </Endpoints>
     <Contents>
       <Content destination=".\">
-        <SourceDirectory path="C:\Users\Trevor\Info344\Assignment2_Cloud\Assignment2_Cloud\rcf\Debug\TrieSearchContent\" />
+        <SourceDirectory path="C:\Users\Trevor\Info344\TrieSearch\Assignment2_Cloud\rcf\Debug\TrieSearchContent\" />
+      </Content>
+      <Content destination=".\">
+        <SourceDirectory path="C:\Users\Trevor\Info344\TrieSearch\Assignment2_Cloud\ecf\TrieSearchContent\" />
       </Content>
     </Contents>
+    <Imports>
+      <Import moduleName="Diagnostics" />
+    </Imports>
   </WebRole>
 </ServiceDefinition>

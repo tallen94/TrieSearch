@@ -11,23 +11,11 @@
     <script>
         $.ajax({
             type: "POST",
-            url: "SearchSuggestions.asmx/DownloadWiki",
+            url: "SearchSuggestions.asmx/BuildTrie",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (msg) {
                 console.log(msg);
-                $.ajax({
-                    type: "POST",
-                    url: "SearchSuggestions.asmx/BuildTrie",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (msg) {
-                        console.log(msg);
-                    },
-                    error: function (msg) {
-                        console.log(msg);
-                    }
-                });
             },
             error: function (msg) {
                 console.log(msg);

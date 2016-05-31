@@ -1,29 +1,57 @@
 ﻿<!DOCTYPE html>
-<html>
+<html >
 <head>
-    <title></title>
+    <title>SearchEngine</title>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular.min.js"></script>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-
-    <script src="index.js"></script>
     <link rel="stylesheet" href="index.css"/>
 </head>
-<body>
-    <h1>Wikipedia Article Search</h1>
-    <div class="container">
-        <form>
-            <div class="form-group">
-                <label>Search</label>
-                <input id="searchQuery" type="text" class="form-control" autocomplete="off"/>
-                <ul id="suggestions" class="list-unstyled">
-                    <li>hi</li>
-                    <li>hello</li>
-                </ul>
+<body ng-app="SearchEngine" ng-controller="MainCtrl">
+    <md-content class="content" layout="column">
+        <md-toolbar md-scroll-shrink="" class="md-tall">
+            <div class="md-toolbar-tools">
+                <h3><span>Big Bertha</span></h3>
             </div>
-        </form>
-    </div>
+            <div class="md-toolbar-tools md-toolbar-tools-bottom">
+                <div class="form-group">
+                    <input class="form-control" ng-model="query" placeholder="Search" ng-change="keyPressSearch(query)" code="13" dl-key-code="enterSearch(query);" />
+                </div>
+                <md-button class="md-icon-button" ng-click="enterSearch(query)">
+                    <i class="material-icons">search</i>
+                </md-button>
+                <div class="suggestions" ng-show="suggestions.length > 0" layout="column">
+                    <md-list class="list-unstyled" ng-show="suggestions.length > 0">
+                        <md-list-item ng-repeat="suggestion in suggestions" ng-click="enterSearch(suggestion)">{{suggestion}}</md-list-item>
+                    </md-list>
+                    <span ng-show="query.length > 0">Press Enter to search</span>
+                </div>
+            </div>
+        </md-toolbar>
+        <md-content class="search-results">
+            <md-list>
+                <md-list-item class="search-result" ng-repeat="result in searchResults" layout-padding>
+                    <div class="md-list-item-text" layout="column">
+                        <h3><a class="md-primary" target="_blank" href="{{result.Link}}">{{result.Title}}</a></h3>
+                        <p class="search-result-link">{{result.Link}}</p>
+                        <p class="search-result-desc">{{result.Lastmod | date: 'medium'}} - {{result.Description}}</p>
+                    </div>
+                    <img ng-src="{{result.Thumbnail}}" />
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </md-content>
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
+    <script src="ng-lodash.min.js"></script>
+    <script src="index.js"></script>
 </body>
 </html>

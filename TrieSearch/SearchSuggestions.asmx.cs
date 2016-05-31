@@ -1,11 +1,13 @@
 ﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Table;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Services;
 
@@ -20,38 +22,46 @@ namespace TrieSearch {
     [System.Web.Script.Services.ScriptService]
     public class SearchSuggestions : System.Web.Services.WebService {
 
-        public static TrieTree tree;
+        public static TrieGraph tree;
         public static string LocalDiskDir = System.IO.Path.GetTempPath() + "\\titles.txt";
 
         [WebMethod]
-        public string BuildTrie() {
-            tree = new TrieTree();
-            StreamReader reader = new StreamReader(LocalDiskDir);
-            PerformanceCounter memProcess = new PerformanceCounter("Memory", "Available MBytes");
-            float memUsage = memProcess.NextValue();
-            string word = reader.ReadLine();
-            int i = 0;
-            while(word != null && memUsage > 200) {
-                tree.AddWord(word);
-                if(i++ % 10000 == 0) {
-                    memUsage = memProcess.NextValue();
-                } 
-                word = reader.ReadLine();
-            }
-            reader.Dispose();
-            return word;
-        }
-
-        [WebMethod]
-        public List<string> GetSuggestions(String s) {
+        public List<string> GetSuggestions(string s) {
             return tree.GetSuggestions(s.ToLower());
         }
 
         [WebMethod]
+        public string BuildTrie() {
+            tree = new TrieGraph();
+            Regex r = new Regex("^[a-zA-Z ]*$");
+            if (!File.Exists(LocalDiskDir)) {
+                DownloadWiki();
+            }
+            string lastLine = "";
+            using (StreamReader reader = new StreamReader(LocalDiskDir)) {
+                string line = reader.ReadLine();
+                int i = 0;
+                PerformanceCounter memCounter = new PerformanceCounter("Memory", "Available MBytes");
+                float availableMem = memCounter.NextValue();
+                while (line != null && availableMem > 100) {
+                    if (r.IsMatch(line)) {
+                        tree.AddTitle(line.ToLower());
+                        i++;
+                        if (i % 10000 == 0) {
+                            availableMem = memCounter.NextValue();
+                        }
+                        lastLine = line.ToLower();
+                    }
+                    line = reader.ReadLine();
+                }
+            }
+            return lastLine + " | " + tree.NumTitles();
+        }
+        
         public bool DownloadWiki() {
             CloudStorageAccount acct = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["StorageConnectionString"]);
             CloudBlobClient blobClient = acct.CreateCloudBlobClient();
-            CloudBlobContainer container = blobClient.GetContainerReference("assignment2blob");
+            CloudBlobContainer container = blobClient.GetContainerReference("wiki");
             if (container.Exists() && !File.Exists(LocalDiskDir)) {
                 CloudBlob blob = container.GetBlobReference("titles.txt");
                 blob.DownloadToFile(LocalDiskDir, FileMode.Create);

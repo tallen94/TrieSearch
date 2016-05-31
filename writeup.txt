@@ -1,29 +1,9 @@
-Cloud Service Assignment2
+Search Engine Assignment 4
 
-1 
-Web Role 
-- Trie Search
+Requirements:
 
-
-Web Service:
-	
-- 3 Web Methods: DownloadWiki, BuildTrie, GetSuggestions
-	
-- DownloadWiki: Downloads the blob file and saves it to disk (I scraped invalid characters before uploading it to the blob container)
-	
-- BuildTrie: Reads from the downloaded file and builds a trie tree. I leave 200 MB of memory, which seems to give sufficient performance
-and I can get to around words that start with v.
-	
-- Get Suggestions: Traverses the trie tree to the end of the given sequence and returns the first 10 suggestions results below that.
-
-Classes: 
-	
-- Trie Node: A node used in a Trie tree. Contains a letter and dictionary of children with the keys being the letters of the child nodes. 
-I used a dictionary for fast access when searching the trie tree. Instead of searching a list for the next letter in O(n), I get O(1) to find the next node. 
-	
-- Trie Tree: A trie search tree that does a dfs when searching for suggestions. Given a seqence of characters, it traverses the tree to the last known character and 
-will return the first 10 suggestions below it. I stopped at 10 to improve the request time.
-
-Client Side:
-	- Watches the text input and makes an ajax request to the asmx 
-service on every key stroke
+End-To-End experience
+- The only thing I could not get working is the nba player stats. 
+- It will automatically search on each keypress if the query is > 2 characters
+- Pressing enter or search will force a search for the current query
+- Results are sorted by how many times each word in the query shows up in the title. If the result contains the index.html page it gets bumped up but still wont be enough to beat queries that are more relevant to the title. It then looks at how many segments are in the url path, if there are less it moves up because paths like /politics are more popular than /politics/blah/stuff/foo/page.html. The last thing is when the last modification was made if it is known. 
