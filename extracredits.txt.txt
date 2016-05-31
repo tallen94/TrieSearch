@@ -1,0 +1,5 @@
+EXTRA CREDITS YEAHH!!!
+
+- I would like to say I made the page look really nice ;)
+- I implemented the google instant type searching but only after the query is greater than 2 characters
+- Instead of the body snippet, I grabbed the page description
