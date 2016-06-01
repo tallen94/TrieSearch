@@ -36,11 +36,11 @@
             </div>
         </md-toolbar>
         <md-content class="search-results" layout-padding>
-            <md-tabs md-dynamic-height ng-if="searchResults.length > 0">
+            <md-tabs md-dynamic-height ng-if="searchResults.length > 0 && !searching">
                 <md-tab id="all">
                     <md-tab-label>All</md-tab-label>
                     <md-tab-body>
-                        <md-list>
+                        <md-list ng-if="searchResults.length > 0 && !searching">
                             <div class="search-result" ng-repeat="result in searchResults" layout-padding>
                                 <div class="md-list-item-text" layout="column">
                                     <h3><a class="md-primary" target="_blank" href="{{result.Link}}">{{result.Title}}</a></h3>
@@ -54,7 +54,7 @@
                 <md-tab id="images">
                     <md-tab-label>Images</md-tab-label>
                     <md-tab-body>
-                        <md-list ng-if="searchResults.length > 0">
+                        <md-list ng-if="searchResults.length > 0 && !searching">
                             <div class="result-img" ng-repeat="img in Images">
                                 <a href="{{img.href}}" target="_blank"><img ng-src="{{img.src}}"/></a>
                                 <div class="result-img-description" layout-padding>
@@ -66,8 +66,8 @@
                     </md-tab-body>
                 </md-tab>
             </md-tabs>
-            <div class="pages" ng-if="searchResults.length > 0">
-                <md-button class="page-number" ng-repeat="page in numPages" ng-click="GetPage(page)">{{page}}</md-button>
+            <div class="pages" ng-if="searchResults.length > 0 && !searching">
+                <md-button ng-class="{'md-primary' : num == currentPage, 'md-raised' : num == currentPage}" class="page-number" ng-repeat="num in numPages" ng-click="GetPage(num)">{{num}}</md-button>
             </div>
         </md-content>
     </md-content>

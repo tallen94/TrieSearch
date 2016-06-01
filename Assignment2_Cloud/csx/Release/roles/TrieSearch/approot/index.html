@@ -14,17 +14,19 @@
 </head>
 <body ng-app="SearchEngine" ng-controller="MainCtrl">
     <md-content class="content" layout="column">
-        <md-toolbar md-scroll-shrink="" class="md-tall">
+        <md-toolbar md-scroll-shrink>
             <div class="md-toolbar-tools">
-                <h3><span>Big Bertha</span></h3>
-            </div>
-            <div class="md-toolbar-tools md-toolbar-tools-bottom">
+                <h2>Big Bertha</h2>
                 <div class="form-group">
                     <input class="form-control" ng-model="query" placeholder="Search" ng-change="keyPressSearch(query)" code="13" dl-key-code="enterSearch(query);" />
                 </div>
                 <md-button class="md-icon-button" ng-click="enterSearch(query)">
                     <i class="material-icons">search</i>
                 </md-button>
+                <span flex></span>
+                <div layout="row" layout-sm="column" layout-align="space-around" ng-if="searching">
+                    <md-progress-circular class="md-accent" md-mode="indeterminate" md-diameter="40"></md-progress-circular>
+                </div>
                 <div class="suggestions" ng-show="suggestions.length > 0" layout="column">
                     <md-list class="list-unstyled" ng-show="suggestions.length > 0">
                         <md-list-item ng-repeat="suggestion in suggestions" ng-click="enterSearch(suggestion)">{{suggestion}}</md-list-item>
@@ -33,17 +35,40 @@
                 </div>
             </div>
         </md-toolbar>
-        <md-content class="search-results">
-            <md-list>
-                <md-list-item class="search-result" ng-repeat="result in searchResults" layout-padding>
-                    <div class="md-list-item-text" layout="column">
-                        <h3><a class="md-primary" target="_blank" href="{{result.Link}}">{{result.Title}}</a></h3>
-                        <p class="search-result-link">{{result.Link}}</p>
-                        <p class="search-result-desc">{{result.Lastmod | date: 'medium'}} - {{result.Description}}</p>
-                    </div>
-                    <img ng-src="{{result.Thumbnail}}" />
-                </md-list-item>
-            </md-list>
+        <md-content class="search-results" layout-padding>
+            <md-tabs md-dynamic-height ng-if="searchResults.length > 0 && !searching">
+                <md-tab id="all">
+                    <md-tab-label>All</md-tab-label>
+                    <md-tab-body>
+                        <md-list ng-if="searchResults.length > 0 && !searching">
+                            <div class="search-result" ng-repeat="result in searchResults" layout-padding>
+                                <div class="md-list-item-text" layout="column">
+                                    <h3><a class="md-primary" target="_blank" href="{{result.Link}}">{{result.Title}}</a></h3>
+                                    <p class="search-result-link">{{result.Link}}</p>
+                                    <p class="search-result-desc">{{result.Lastmod | date: 'medium'}} - {{result.Description}}</p>
+                                </div>
+                            </div>
+                        </md-list>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab id="images">
+                    <md-tab-label>Images</md-tab-label>
+                    <md-tab-body>
+                        <md-list ng-if="searchResults.length > 0 && !searching">
+                            <div class="result-img" ng-repeat="img in Images">
+                                <a href="{{img.href}}" target="_blank"><img ng-src="{{img.src}}"/></a>
+                                <div class="result-img-description" layout-padding>
+                                    <h1>{{img.title}}</h1>
+                                    <p>{{img.href}}</p>
+                                </div>
+                            </div>
+                        </md-list>
+                    </md-tab-body>
+                </md-tab>
+            </md-tabs>
+            <div class="pages" ng-if="searchResults.length > 0 && !searching">
+                <md-button ng-class="{'md-primary' : num == currentPage, 'md-raised' : num == currentPage}" class="page-number" ng-repeat="num in numPages" ng-click="GetPage(num)">{{num}}</md-button>
+            </div>
         </md-content>
     </md-content>
     

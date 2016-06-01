@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<serviceModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Assignment2_Cloud" generation="1" functional="0" release="0" Id="b9e3f6ec-5df5-4148-b2af-d174587c9716" dslVersion="1.2.0.0" xmlns="http://schemas.microsoft.com/dsltools/RDSM">
+<serviceModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Assignment2_Cloud" generation="1" functional="0" release="0" Id="0e12de0d-5e48-463c-bf6a-fc1425931ca6" dslVersion="1.2.0.0" xmlns="http://schemas.microsoft.com/dsltools/RDSM">
   <groups>
     <group name="Assignment2_CloudGroup" generation="1" functional="0" release="0">
       <componentports>
@@ -81,9 +81,9 @@
     </group>
   </groups>
   <implements>
-    <implementation Id="ab6d1c3a-046d-4ae5-8e7c-acecbc307ca9" ref="Microsoft.RedDog.Contract\ServiceContract\Assignment2_CloudContract@ServiceDefinition">
+    <implementation Id="5079d54a-8f10-4fbc-8cf5-fb723b1235e4" ref="Microsoft.RedDog.Contract\ServiceContract\Assignment2_CloudContract@ServiceDefinition">
       <interfacereferences>
-        <interfaceReference Id="da1939da-cc1d-4457-bed7-9c04285af33a" ref="Microsoft.RedDog.Contract\Interface\TrieSearch:Endpoint1@ServiceDefinition">
+        <interfaceReference Id="9dc33ef4-c4aa-458b-94cf-51c5d1e60659" ref="Microsoft.RedDog.Contract\Interface\TrieSearch:Endpoint1@ServiceDefinition">
           <inPort>
             <inPortMoniker name="/Assignment2_Cloud/Assignment2_CloudGroup/TrieSearch:Endpoint1" />
           </inPort>

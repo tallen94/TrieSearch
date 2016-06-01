@@ -35,8 +35,8 @@ angular.module("SearchEngine", ['ngMaterial', 'ngLodash'])
 
         $scope.keyPressSearch = function (query) {
             $scope.suggestions = [];
-            $scope.currentPage = 0;
-            $scope.loadedPrevQuery = false;
+            $scope.currentPage = 1;
+
             if (query.length > 0) {
                 var config = {
                     'Content-Type': 'application/json',
@@ -46,38 +46,14 @@ angular.module("SearchEngine", ['ngMaterial', 'ngLodash'])
                 if (foundPrevQueries.length > 0) {
                     $scope.suggestions.push(foundPrevQueries[0]);
                     $timeout(function () {
-                        console.log(query + " " + $scope.query);
                         if (query === $scope.query) {
-                            $scope.searching = true;
-                            $http.jsonp("http://localhost:51949/Admin.asmx/GetPages?query=" + foundPrevQueries[0] + "&callback=JSON_CALLBACK&page=0")
-                                .success(function (response) {
-                                    $scope.searching = false;
-                                    $scope.searchResults = response.data;
-                                    $scope.numPages = Range(response.numPages);
-                                    $scope.Images = CreateImageArray(response.data);
-                                    $scope.loadedPrevQuery = true;
-                                    $scope.currentQuery = foundPrevQueries[0];
-                                }
-                            );
+                            PerformQuery(foundPrevQueries[0], QueryCallback, 1, false);
                         }
                     }, 500);
                 } else if (query.length >= 5) {
                     $timeout(function () {
-                        console.log(query + " " + $scope.query);
                         if (query === $scope.query) {
-                            $scope.searching = true;
-                            $http.jsonp("http://localhost:51949/Admin.asmx/GetPages?query=" + query + "&callback=JSON_CALLBACK&page=0")
-                                .success(function (response) {
-                                    $scope.searching = false;
-                                    $scope.searchResults = response.data;
-                                    $scope.numPages = Range(response.numPages);
-                                    if (response.data.length > 0) {
-                                        $scope.previousQueries.push(query);
-                                    }
-                                    $scope.Images = CreateImageArray(response.data);
-                                    $scope.currentQuery = query;
-                                }
-                            );
+                            PerformQuery(query, QueryCallback, 1, true);
                         }
                     }, 500);
                 }
@@ -99,36 +75,36 @@ angular.module("SearchEngine", ['ngMaterial', 'ngLodash'])
             $scope.suggestions = [];
             if (query.length > 0 && query != $scope.currentQuery) {
                 console.log(query != $scope.currentQuery);
-                $scope.searching = true;
-                $http.jsonp("http://localhost:51949/Admin.asmx/GetPages?query=" + query + "&callback=JSON_CALLBACK&page=0")
-                    .success(function (response) {
-                        $scope.searching = false;
-                        $scope.searchResults = response.data;
-                        $scope.numPages = Range(response.numPages);
-                        if (response.data.length > 0) {
-                            $scope.previousQueries.push(query);
-                        }
-                        $scope.Images = CreateImageArray(response.data);
-                        $scope.currentQuery = query;
-                    }
-                );
+                PerformQuery(query, QueryCallback, 1, true)
             } 
         }
 
         $scope.GetPage = function (page) {
             if (page != $scope.currentPage) {
                 $scope.currentPage = page;
-                $scope.searching = true;
-                $http.jsonp("http://localhost:51949/Admin.asmx/GetPages?query=" + $scope.query + "&callback=JSON_CALLBACK&page=" + (page - 1))
-                    .success(function (response) {
-                        $scope.searching = false;
-                        $scope.searchResults = response.data;
-                        $scope.numPages = Range(response.numPages);
-                        $scope.Images = CreateImageArray(response.data);
-                        angular.element(document.querySelector(".search-results")).scollTop = 0;
-                    }
-                );
+                PerformQuery($scope.currentQuery, QueryCallback, page, false);
             }
+        }
+
+        function PerformQuery(query, callback, page, saveQuery) {
+            $scope.currentQuery = query;
+            if (!$scope.searching) {
+                $scope.searching = true;
+                $http.jsonp("http://bigbertha.cloudapp.net/Admin.asmx/GetPages?query=" + $scope.query + "&callback=JSON_CALLBACK&page=" + (page - 1))
+                    .success(function (response) {
+                        callback(response);
+                        if (response.data.length > 0 && saveQuery) {
+                            $scope.previousQueries.push(query);
+                        }
+                    });
+            }
+        }
+
+        function QueryCallback(response) {
+            $scope.searchResults = response.data;
+            $scope.numPages = Range(response.numPages);
+            $scope.Images = CreateImageArray(response.data);
+            $scope.searching = false;
         }
 
         $scope.ParseArrayString = function (str) {

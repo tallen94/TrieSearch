@@ -22,44 +22,109 @@ angular.module("SearchEngine", ['ngMaterial', 'ngLodash'])
             }
         }
     })
-    .controller("MainCtrl", function ($scope, $http, lodash, Lev) {
+    .controller("MainCtrl", function ($scope, $http, lodash, Lev, $timeout) {
         $scope.query = "";
         $scope.suggestions = [];
+        $scope.previousQueries = [];
+        $scope.Images = [];
+        $scope.pages = 0;
+        $scope.currentPage = 1;
+        $scope.searching = false;
+        $scope.loadedPrevQuery = false;
+        $scope.currentQuery = "";
 
         $scope.keyPressSearch = function (query) {
-            if (query.length >= 3) {
+            $scope.suggestions = [];
+            $scope.currentPage = 1;
+
+            if (query.length > 0) {
                 var config = {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 }
-                $http.jsonp("http://bigbertha.cloudapp.net/Admin.asmx/GetPages?query=" + query + "&callback=JSON_CALLBACK")
-                    .success(function (response) {
-                        $scope.searchResults = response;
-                    }
-                );
+                var foundPrevQueries = FindInPreviousQueries($scope.previousQueries, query);
+                if (foundPrevQueries.length > 0) {
+                    $scope.suggestions.push(foundPrevQueries[0]);
+                    $timeout(function () {
+                        if (query === $scope.query) {
+                            PerformQuery(foundPrevQueries[0], QueryCallback, 1, false);
+                        }
+                    }, 500);
+                } else if (query.length >= 5) {
+                    $timeout(function () {
+                        if (query === $scope.query) {
+                            PerformQuery(query, QueryCallback, 1, true);
+                        }
+                    }, 500);
+                }
+
                 var data = { s: query }
                 $http.post("SearchSuggestions.asmx/GetSuggestions", data, config)
                     .success(function (response) {
-                        $scope.suggestions = $scope.suggestions = SortByLev(response.d, query);
+                        var suggestions = SortByLev(response.d, query);
+                        $scope.suggestions = $scope.suggestions.concat(suggestions.slice($scope.suggestions.length));
                     }
                 );
-
             } else {
                 $scope.searchResults = [];
-                $scope.suggestions = [];
+                $scope.currentQuery = "";
             }
         }
 
         $scope.enterSearch = function (query) {
-            $scope.query = query;
-            if (query.length > 0) {
-                $http.jsonp("http://bigbertha.cloudapp.net/GetPages?query=" + query + "&callback=JSON_CALLBACK")
-                    .success(function (response) {
-                        $scope.searchResults = response;
-                        $scope.suggestions = [];
-                    }
-                );
+            $scope.suggestions = [];
+            if (query.length > 0 && query != $scope.currentQuery) {
+                console.log(query != $scope.currentQuery);
+                PerformQuery(query, QueryCallback, 1, true)
             } 
+        }
+
+        $scope.GetPage = function (page) {
+            if (page != $scope.currentPage) {
+                $scope.currentPage = page;
+                PerformQuery($scope.currentQuery, QueryCallback, page, false);
+            }
+        }
+
+        function PerformQuery(query, callback, page, saveQuery) {
+            $scope.currentQuery = query;
+            if (!$scope.searching) {
+                $scope.searching = true;
+                $http.jsonp("http://bigbertha.cloudapp.net/Admin.asmx/GetPages?query=" + $scope.query + "&callback=JSON_CALLBACK&page=" + (page - 1))
+                    .success(function (response) {
+                        callback(response);
+                        if (response.data.length > 0 && saveQuery) {
+                            $scope.previousQueries.push(query);
+                        }
+                    });
+            }
+        }
+
+        function QueryCallback(response) {
+            $scope.searchResults = response.data;
+            $scope.numPages = Range(response.numPages);
+            $scope.Images = CreateImageArray(response.data);
+            $scope.searching = false;
+        }
+
+        $scope.ParseArrayString = function (str) {
+            return JSON.parse(str);
+        }
+
+        function CreateImageArray(results) {
+            var arr = [];
+            for (var i = 0; i < results.length; i++) {
+                var srcArray = JSON.parse(results[i].Images);
+                for (var j = 0; j < srcArray.length; j++) {
+                    var img = {
+                        src: srcArray[j],
+                        href: results[i].Link,
+                        title: results[i].Title
+                    }
+                    arr.push(img);
+                }
+            }
+            return arr;
         }
 
         function SortByLev(array, query) {
@@ -91,6 +156,24 @@ angular.module("SearchEngine", ['ngMaterial', 'ngLodash'])
             result = result.concat(left.slice(lefti));
             result = result.concat(right.slice(righti));
             return result;
+        }
+
+        function FindInPreviousQueries(arr, str) {
+            var queries = [];
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i].indexOf(str) > -1) {
+                    queries.push(arr[i]);
+                }
+            }
+            return SortByLev(queries, str);
+        }
+
+        function Range(num) {
+            var range = [];
+            for (var i = 1; i <= num; i++) {
+                range.push(i);
+            }
+            return range;
         }
     })
     .factory("Lev", function () {

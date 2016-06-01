@@ -17,20 +17,19 @@
 
 .md-toolbar-tools {
     max-height: 100px;
-    height: 100px;
+    height: 80px;
     position: relative;
 }
 
-.md-toolbar-tools h1 {
-    font-size: 30px;
+.md-toolbar-tools h2 {
     margin-right: 30px;
 }
 
 .suggestions {
     position: absolute;
-    top: 54px;
+    top: 61px;
     width: 40vw;
-    left: 16px;
+    left: 140px;
     text-align: left;
     color: black;
     z-index: 100;
@@ -54,20 +53,46 @@
     margin-top: 3px;
 }
 
-.search-results {
-    margin-left: 50px;
-    margin-top: 30px;
-}
-
-md-list-item.search-result {
+.search-result {
     max-width: 700px;
 }
 
-.search-result img {
-    width: 250px;
-    height: 150px;
-    object-fit: none;
+.result-img {
+    display: inline-block;
+    margin: 5px;
+    position: relative
+}
+
+.result-img-description {
+    visibility: hidden;
+    background-color: rgba(0, 0, 0, .8);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 5px;
+}
+
+.result-img-description h1 {
+    font-size: 12px;
+    color: white;
+}
+
+.result-img-description p {
+    font-size: 10px;
+    color: white;
+}
+
+.result-img:hover .result-img-description {
+    visibility: visible;
+}
+
+
+.result-img img {
+    object-fit: scale-down;
     object-position: center;
+    height: 150px;
 }
 
 .search-result h3 {
@@ -90,4 +115,27 @@ md-list-item.search-result {
 
 .search-results {
     height: 100%;
+    margin-right: -15px;
+    margin-top: 20px;
 }
+
+md-tabs {
+    margin-top: 10px;
+}
+
+md-tab-content {
+    margin-top: 20px;
+}
+
+.pages {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.pages .md-button {
+    min-width: 25px;
+    width: 25px;
+    margin: 1px;
+}
+
