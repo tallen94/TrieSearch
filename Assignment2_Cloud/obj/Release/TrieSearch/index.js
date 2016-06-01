@@ -32,7 +32,7 @@ angular.module("SearchEngine", ['ngMaterial', 'ngLodash'])
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 }
-                $http.jsonp("http://localhost:51949/Admin.asmx/GetPages?query=" + query + "&callback=JSON_CALLBACK")
+                $http.jsonp("http://bigbertha.cloudapp.net/Admin.asmx/GetPages?query=" + query + "&callback=JSON_CALLBACK")
                     .success(function (response) {
                         $scope.searchResults = response;
                     }
@@ -53,7 +53,7 @@ angular.module("SearchEngine", ['ngMaterial', 'ngLodash'])
         $scope.enterSearch = function (query) {
             $scope.query = query;
             if (query.length > 0) {
-                $http.jsonp("http://localhost:51949/Admin.asmx/GetPages?query=" + query + "&callback=JSON_CALLBACK&shouldCache=true")
+                $http.jsonp("http://bigbertha.cloudapp.net/GetPages?query=" + query + "&callback=JSON_CALLBACK")
                     .success(function (response) {
                         $scope.searchResults = response;
                         $scope.suggestions = [];

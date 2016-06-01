@@ -3,3 +3,6 @@ EXTRA CREDITS YEAHH!!!
 - I would like to say I made the page look really nice ;)
 - I implemented the google instant type searching but only after the query is greater than 2 characters
 - Instead of the body snippet, I grabbed the page description
+- I grab images from each page and display them on the images tab. If you hover over them, you can see the page title and website they came from. Clicking will open a new tab with the page the image is from.
+
+tallensearchengine.cloudapp.net

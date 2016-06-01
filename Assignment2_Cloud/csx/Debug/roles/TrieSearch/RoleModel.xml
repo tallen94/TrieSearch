@@ -24,14 +24,14 @@
     <Property name="SetConfiguration" value="Configuration=Debug" />
     <Property name="SetPlatform" value="Platform=AnyCPU" />
     <Property name="RoleTargetFramework" value="v4.5" />
-    <Property name="OutputDir" value="C:\Users\Trevor\Info344\TrieSearch\Assignment2_Cloud\obj\Debug\TrieSearch\" />
+    <Property name="OutputDir" value="C:\Users\Trevor\Info344\SearchEngine\Assignment2_Cloud\obj\Debug\TrieSearch\" />
     <Property name="EntryPoint" value="TrieSearch.dll" />
-    <Property name="SourceDir" value="C:\Users\Trevor\Info344\TrieSearch\TrieSearch\" />
-    <Property name="SitePhysicalPath" value="C:\Users\Trevor\Info344\TrieSearch\TrieSearch\" />
+    <Property name="SourceDir" value="C:\Users\Trevor\Info344\SearchEngine\TrieSearch\" />
+    <Property name="SitePhysicalPath" value="C:\Users\Trevor\Info344\SearchEngine\TrieSearch\" />
     <Property name="TargetRuntimeVersion" value="v4.0" />
   </Properties>
   <Sites>
-    <Site name="Web" physicalDirectory="C:\Users\Trevor\Info344\TrieSearch\TrieSearch\">
+    <Site name="Web" physicalDirectory="C:\Users\Trevor\Info344\SearchEngine\TrieSearch\">
       <Bindings>
         <Binding name="Endpoint1" endpointName="Endpoint1" />
       </Bindings>

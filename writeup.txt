@@ -10,3 +10,8 @@ End-To-End experience
 
 The way I store entites in the table are the partition key is each unique word it comes across and the rowkey is the title/url that contains that word. This makes it super easy to query, where you just select from the table the partitionkey equal to each word in the query. Then sorting becomes easy with linq. You order by the count of each url title, then by rank, then lastmod.
 
+I paginate the data by grouping it into arrays of 20. Each new search gets cached and when the number for the page is clicked, it can quickly search the cache for the query and page number.
+
+There is query caching on the front end as well. On every key press, the previous queries are searched and ones that contain what is being typed are ordered by Levenshtein distance and the first one is queried. There is a delay between each key press of 500ms. If what currently is in the search box is eqaul to what was in it 500ms ago, the search will happen. This is to prevent every letter type executing a search, since the user isnt actually searching for each segment. They only want the search that shows up when they stop typing. 
+
+If a similar previous query is found it is added to the top of the search suggestions when the user is typing in the search box. Search suggestions are also clickable and will perform a search.

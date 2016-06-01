@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<serviceModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Assignment2_Cloud" generation="1" functional="0" release="0" Id="16101c92-fc71-4227-a15a-c77263bb7728" dslVersion="1.2.0.0" xmlns="http://schemas.microsoft.com/dsltools/RDSM">
+<serviceModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Assignment2_Cloud" generation="1" functional="0" release="0" Id="256becd1-12e4-4c8b-bc19-66508aab4849" dslVersion="1.2.0.0" xmlns="http://schemas.microsoft.com/dsltools/RDSM">
   <groups>
     <group name="Assignment2_CloudGroup" generation="1" functional="0" release="0">
       <componentports>
@@ -52,7 +52,7 @@
       </maps>
       <components>
         <groupHascomponents>
-          <role name="TrieSearch" generation="1" functional="0" release="0" software="C:\Users\Trevor\Info344\TrieSearch\Assignment2_Cloud\csx\Debug\roles\TrieSearch" entryPoint="base\x64\WaHostBootstrapper.exe" parameters="base\x64\WaIISHost.exe " memIndex="-1" hostingEnvironment="frontendadmin" hostingEnvironmentVersion="2">
+          <role name="TrieSearch" generation="1" functional="0" release="0" software="C:\Users\Trevor\Info344\SearchEngine\Assignment2_Cloud\csx\Debug\roles\TrieSearch" entryPoint="base\x64\WaHostBootstrapper.exe" parameters="base\x64\WaIISHost.exe " memIndex="-1" hostingEnvironment="frontendadmin" hostingEnvironmentVersion="2">
             <componentports>
               <inPort name="Endpoint1" protocol="http" portRanges="80" />
             </componentports>
@@ -81,9 +81,9 @@
     </group>
   </groups>
   <implements>
-    <implementation Id="ca035836-1964-4213-95c2-6e037454f82d" ref="Microsoft.RedDog.Contract\ServiceContract\Assignment2_CloudContract@ServiceDefinition">
+    <implementation Id="3ffb7eec-55f1-4bc4-9a5b-f75e18feae73" ref="Microsoft.RedDog.Contract\ServiceContract\Assignment2_CloudContract@ServiceDefinition">
       <interfacereferences>
-        <interfaceReference Id="5f625b09-0319-4fdf-8035-4180804e225f" ref="Microsoft.RedDog.Contract\Interface\TrieSearch:Endpoint1@ServiceDefinition">
+        <interfaceReference Id="55d8024e-352c-4100-a064-4fb445187055" ref="Microsoft.RedDog.Contract\Interface\TrieSearch:Endpoint1@ServiceDefinition">
           <inPort>
             <inPortMoniker name="/Assignment2_Cloud/Assignment2_CloudGroup/TrieSearch:Endpoint1" />
           </inPort>
