@@ -33,7 +33,7 @@ namespace TrieSearch {
         [WebMethod]
         public string BuildTrie() {
             tree = new TrieGraph();
-            Regex r = new Regex("^[a-zA-Z ]*$");
+            Regex r = new Regex(@"^[a-zA-Z ]*$");
             if (!File.Exists(LocalDiskDir)) {
                 DownloadWiki();
             }

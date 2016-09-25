@@ -3,7 +3,6 @@ Search Engine Assignment 4
 Requirements:
 
 End-To-End experience
-- The only thing I could not get working is the nba player stats. 
 - It will automatically search on each keypress if the query is > 2 characters
 - Pressing enter or search will force a search for the current query
 - Results are sorted by how many times each word in the query shows up in the title. If the result contains the index.html page it gets bumped up but still wont be enough to beat queries that are more relevant to the title. It then looks at how many segments are in the url path, if there are less it moves up because paths like /politics are more popular than /politics/blah/stuff/foo/page.html. The last thing is when the last modification was made if it is known. 

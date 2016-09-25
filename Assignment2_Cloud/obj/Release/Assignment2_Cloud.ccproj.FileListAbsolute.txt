@@ -200,6 +200,8 @@ C:\Users\Trevor\Info344\SearchEngine\Assignment2_Cloud\obj\Release\TrieSearch\Bu
 C:\Users\Trevor\Info344\SearchEngine\Assignment2_Cloud\obj\Release\TrieSearch\index.css
 C:\Users\Trevor\Info344\SearchEngine\Assignment2_Cloud\obj\Release\TrieSearch\index.html
 C:\Users\Trevor\Info344\SearchEngine\Assignment2_Cloud\obj\Release\TrieSearch\index.js
+C:\Users\Trevor\Info344\SearchEngine\Assignment2_Cloud\obj\Release\TrieSearch\md-data-table.min.css
+C:\Users\Trevor\Info344\SearchEngine\Assignment2_Cloud\obj\Release\TrieSearch\md-data-table.min.js
 C:\Users\Trevor\Info344\SearchEngine\Assignment2_Cloud\obj\Release\TrieSearch\ng-lodash.min.js
 C:\Users\Trevor\Info344\SearchEngine\Assignment2_Cloud\obj\Release\TrieSearch\packages.config
 C:\Users\Trevor\Info344\SearchEngine\Assignment2_Cloud\obj\Release\TrieSearch\SearchSuggestions.asmx

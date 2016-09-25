@@ -8,12 +8,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular.min.js"></script>
     <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="stylesheet" href="md-data-table.min.css" />
 
     <link rel="stylesheet" href="index.css"/>
 </head>
 <body ng-app="SearchEngine" ng-controller="MainCtrl">
-    <md-content class="content" layout="column">
+    <md-content class="content">
         <md-toolbar md-scroll-shrink>
             <div class="md-toolbar-tools">
                 <h2>Big Bertha</h2>
@@ -35,20 +36,22 @@
                 </div>
             </div>
         </md-toolbar>
-        <md-content class="search-results" layout-padding>
+        <md-content class="search-results">
             <md-tabs md-dynamic-height ng-if="searchResults.length > 0 && !searching">
                 <md-tab id="all">
                     <md-tab-label>All</md-tab-label>
                     <md-tab-body>
-                        <md-list ng-if="searchResults.length > 0 && !searching">
-                            <div class="search-result" ng-repeat="result in searchResults" layout-padding>
-                                <div class="md-list-item-text" layout="column">
-                                    <h3><a class="md-primary" target="_blank" href="{{result.Link}}">{{result.Title}}</a></h3>
-                                    <p class="search-result-link">{{result.Link}}</p>
-                                    <p class="search-result-desc">{{result.Lastmod | date: 'medium'}} - {{result.Description}}</p>
+                        <div layout-padding>
+                            <md-list ng-if="searchResults.length > 0 && !searching">
+                                <div class="search-result" ng-repeat="result in searchResults">
+                                    <div class="md-list-item-text" layout="column">
+                                        <h3><a class="md-primary" target="_blank" href="{{result.Link}}">{{Unescape(result.Title)}}</a></h3>
+                                        <p class="search-result-link">{{Unescape(result.Link)}}</p>
+                                        <p class="search-result-desc">{{result.Lastmod | date: 'medium'}} - {{Unescape(result.Description)}}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </md-list>
+                            </md-list>
+                        </div>        
                     </md-tab-body>
                 </md-tab>
                 <md-tab id="images">
@@ -65,6 +68,114 @@
                         </md-list>
                     </md-tab-body>
                 </md-tab>
+                <md-tab id="players" ng-if="players.length > 0">
+                    <md-tab-label>NBA Players</md-tab-label>
+                    <md-tab-body>
+                        <div layout-padding>
+                            <md-list>
+                                <div ng-repeat="player in players" class="player" layout-padding layout="column">
+                                    <h1 md-primary>{{player.name}}</h1>
+                                    <h4>Team: {{player.team}}</h4>
+                                    <div class="player-stats-2">
+                                        <md-table-container flex="70">
+                                            <table md-table>
+                                                <thead md-head>
+                                                    <tr md-row>
+                                                        <th md-column>Assists</th>
+                                                        <th md-column>Turn Overs</th>
+                                                        <th md-column>Steals</th>
+                                                        <th md-column>Blocks</th>
+                                                        <th md-column>PF</th>
+                                                        <th md-column>PPG</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody md-body>
+                                                    <tr md-row>
+                                                        <td md-cell>{{player.ast}}</td>
+                                                        <td md-cell>{{player._to}}</td>
+                                                        <td md-cell>{{player.stl}}</td>
+                                                        <td md-cell>{{player.blk}}</td>
+                                                        <td md-cell>{{player.pf}}</td>
+                                                        <td md-cell>{{player.ppg}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </md-table-container>
+                                    </div>
+                                    <div class="player-stats-1" layout="row">
+                                        <div flex="60">
+                                            <h2 class="md-accent">Shooting</h2>
+                                            <md-table-container>
+                                                <table md-table>
+                                                    <thead md-head>
+                                                        <tr md-row>
+                                                            <th md-column></th>
+                                                            <th md-column>FG</th>
+                                                            <th md-column>3's</th>
+                                                            <th md-column>FT</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody md-body>
+                                                        <tr md-row>
+                                                            <td md-cell>Attempted</td>
+                                                            <td md-cell>{{player.fg_attempted}}</td>
+                                                            <td md-cell>{{player.three_attempted}}</td>
+                                                            <td md-cell>{{player.ft_attempted}}</td>
+                                                        </tr>
+                                                        <tr md-row>
+                                                            <td md-cell>Made</td>
+                                                            <td md-cell>{{player.fg_made}}</td>
+                                                            <td md-cell>{{player.three_made}}</td>
+                                                            <td md-cell>{{player.ft_made}}</td>
+
+                                                        </tr>
+                                                        <tr md-row>
+                                                            <td md-cell>Percent</td>
+                                                            <td md-cell>{{player.fg_percent}}%</td>
+                                                            <td md-cell>{{player.three_percent}}%</td>
+                                                            <td md-cell>{{player.ft_percent}}%</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </md-table-container>
+                                        </div>
+                                        
+                                        <div flex="10"></div>
+                                        <div flex="30">
+                                            <h3>Rebounds</h3>
+                                            <md-table-container >
+                                                <table md-table>
+                                                    <thead md-head>
+                                                        <tr md-row>
+                                                            <th md-column></th>
+                                                            <th md-column></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody md-body>
+                                                        <tr md-row>
+                                                            <td md-cell>Offense</td>
+                                                            <td md-cell>{{player.rebounds_offense}}</td>
+                                                        </tr>
+                                                        <tr md-row>
+                                                            <td md-cell>Defense</td>
+                                                            <td md-cell>{{player.rebounds_defense}}</td>
+
+                                                        </tr>
+                                                        <tr md-row>
+                                                            <td md-cell>Total</td>
+                                                            <td md-cell>{{player.rebounds_total}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </md-table-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            </md-list>     
+                        </div>
+                       
+                    </md-tab-body>
+                </md-tab>
             </md-tabs>
             <div class="pages" ng-if="searchResults.length > 0 && !searching">
                 <md-button ng-class="{'md-primary' : num == currentPage, 'md-raised' : num == currentPage}" class="page-number" ng-repeat="num in numPages" ng-click="GetPage(num)">{{num}}</md-button>
@@ -76,6 +187,8 @@
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.5.6/angular-sanitize.min.js"></script>
+    <script src="md-data-table.min.js"></script>
     <script src="ng-lodash.min.js"></script>
     <script src="index.js"></script>
 </body>

@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-angular.module("SearchEngine", ['ngMaterial', 'ngLodash'])
+angular.module("SearchEngine", ['ngMaterial', 'ngLodash', 'ngSanitize', 'md.data.table'])
     .config(function ($mdThemingProvider) {
         $mdThemingProvider.theme('default')
             .primaryPalette('indigo')
@@ -22,7 +22,7 @@ angular.module("SearchEngine", ['ngMaterial', 'ngLodash'])
             }
         }
     })
-    .controller("MainCtrl", function ($scope, $http, lodash, Lev, $timeout) {
+    .controller("MainCtrl", function ($scope, $http, lodash, Lev, $timeout, $sce) {
         $scope.query = "";
         $scope.suggestions = [];
         $scope.previousQueries = [];
@@ -59,6 +59,7 @@ angular.module("SearchEngine", ['ngMaterial', 'ngLodash'])
                 }
 
                 var data = { s: query }
+                
                 $http.post("SearchSuggestions.asmx/GetSuggestions", data, config)
                     .success(function (response) {
                         var suggestions = SortByLev(response.d, query);
@@ -90,12 +91,17 @@ angular.module("SearchEngine", ['ngMaterial', 'ngLodash'])
             $scope.currentQuery = query;
             if (!$scope.searching) {
                 $scope.searching = true;
-                $http.jsonp("http://bigbertha.cloudapp.net/Admin.asmx/GetPages?query=" + $scope.query + "&callback=JSON_CALLBACK&page=" + (page - 1))
+                $http.jsonp("http://bigbertha.cloudapp.net/Admin.asmx/GetPages?query=" + query + "&callback=JSON_CALLBACK&page=" + (page - 1))
                     .success(function (response) {
                         callback(response);
                         if (response.data.length > 0 && saveQuery) {
                             $scope.previousQueries.push(query);
                         }
+                    });
+                $http.jsonp("http://ec2-54-187-160-32.us-west-2.compute.amazonaws.com/GetPlayer.php?callback=JSON_CALLBACK&player_name=" + query)
+                    .success(function (response) {
+                        console.log(response);
+                        $scope.players = response;
                     });
             }
         }
@@ -109,6 +115,10 @@ angular.module("SearchEngine", ['ngMaterial', 'ngLodash'])
 
         $scope.ParseArrayString = function (str) {
             return JSON.parse(str);
+        }
+
+        $scope.Unescape = function (str) {
+            return $sce.trustAsHtml(str);
         }
 
         function CreateImageArray(results) {
